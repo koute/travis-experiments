@@ -1,0 +1,33 @@
+language: rust
+
+sudo: false
+
+os:
+  - linux
+  - osx
+
+matrix:
+  include:
+    - os: linux
+      dist: trusty
+      addons:
+        chrome: stable
+    - os: osx
+      addons:
+        chrome: beta
+
+rust:
+#  - nightly
+  - stable
+#  - beta
+
+env:
+#  - TARGET=wasm32-unknown-unknown
+  - TARGET=asmjs-unknown-emscripten
+#  - TARGET=wasm32-unknown-emscripten
+
+script:
+  - nvm install 9
+  - git clone git@github.com:koute/stdweb.git
+  - cd stdweb
+  - ./ci.sh
