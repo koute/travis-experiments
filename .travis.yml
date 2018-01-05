@@ -8,9 +8,9 @@ matrix:
       dist: trusty
       addons:
         chrome: stable
-    - os: osx
-      addons:
-        chrome: beta
+#    - os: osx
+#      addons:
+#        chrome: beta
 
 rust:
 #  - nightly
@@ -26,4 +26,7 @@ script:
   - nvm install 9
   - git clone git@github.com:koute/stdweb.git
   - cd stdweb
-  - ./ci.sh
+  - export RUST_BACKTRACE=1
+  - export CARGO_WEB_LOG=cargo_web=debug
+  - rustup target add asmjs-unknown-emscripten
+  - cargo web test --target-asmjs-emscripten
