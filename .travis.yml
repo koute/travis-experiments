@@ -2,10 +2,6 @@ language: rust
 
 sudo: false
 
-os:
-  - linux
-  - osx
-
 matrix:
   include:
     - os: linux
