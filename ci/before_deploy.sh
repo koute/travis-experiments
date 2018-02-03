@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-PROJECT_NAME=$(cat Cargo.toml | sed -En 's/.+?name *= *"([^"]+)".*/\1/p' | head -n 1)
+PROJECT_NAME=$(cat Cargo.toml | ruby -e 'STDIN.read =~ /name *= *"(.+?)"/; puts $1')
 
 if [ -z "${DEPLOY_TARGETS-}" ]; then
     exit 1

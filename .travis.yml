@@ -6,20 +6,26 @@ cache:
 dist: trusty
 sudo: false
 
+custom:
+  tests: &test
+    addons:
+      chrome: stable
+    script: ./ci/ci.sh
+
 jobs:
   include:
-    - stage: test
+    - <<: *test
+      stage: test
       os: linux
       rust: stable
-      script: ./ci/ci.sh
-    - stage: test
+    - <<: *test
+      stage: test
       os: linux
       rust: nightly
-      script: ./ci/ci.sh
-    - stage: test
+    - <<: *test
+      stage: test
       os: linux
       rust: beta
-      script: ./ci/ci.sh
 
     - stage: deploy
       if: tag IS present
