@@ -30,6 +30,7 @@ deploy:
     - $PROJECT_NAME-*
   skip_cleanup: true
   on:
+    condition: ! -z "$DEPLOY_TARGETS"
     repo: koute/travis-experiments
     tags: true
 
