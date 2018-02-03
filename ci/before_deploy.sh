@@ -18,5 +18,5 @@ for TARGET in $DEPLOY_TARGETS; do
 
     for FILE in target/travis-deployment/$TARGET/bin/*; do
         cat $FILE | gzip > travis-deployment/$(basename $FILE)-$TARGET.gz
-    fi
+    done
 done
