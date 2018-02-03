@@ -1,33 +1,44 @@
+env:
+  global:
+    - PROJECT_NAME=foobar
+    - REPOSITORY_PATH=koute/travis-experiments
+
 language: rust
 
+cache:
+  cargo: true
+
+dist: trusty
 sudo: false
 
 matrix:
   include:
     - os: linux
-      dist: trusty
-      addons:
-        chrome: stable
-#    - os: osx
-#      addons:
-#        chrome: beta
+      rust: stable
+    - os: linux
+      rust: nightly
+      env: DEPLOY=1
+      env: DEPLOY_TARGET=(i686-unknown-linux-musl x86_64-unknown-linux-musl)
+    # - os: osx
+    #   rust: nightly
+    #   env: DEPLOY=1
+    #   env: DEPLOY_TARGET=(x86_64-apple-darwin)
 
-rust:
-#  - nightly
-  - stable
-#  - beta
+deploy:
+  provider: releases
+  api_key:
+    secure: BlW9DNC9u1hwC4z+vGWYqIwerb9bgfAJcaoQ30xLiv3SPy3OQzaryp7moBkbHcuhFTHRXQPqj3rvBD/QgXgXJ2kx08TZSq3wMY1sPg3MKzmsNAxFqKRsJy2cK0eZq6N/l1L9GP/h0Gs6JekzLf6Z1wYKHOCM/SnTm45Kvyz5sSn7m7WXmG7wwxMk0yaMfLfrGyPO+GoQPDUc58Ulh4GanPpnJFpXqCEePheo5+NBZwSK+C4GaGccGR8lNnw1K7dNfdyrK4nm2wYTFVvkJwSxd4R6KchDFEN4LTP6Zzrfg5CE25n0KYTQ8mf3yhyXERq8/WQQLszKt1cwsJhU5kI7HulJ0I8MbD7MACBfyzVfpEyRoViTRiiARYpQjd/PCe4Ha/z/OpgIdPQMQMa0TaMXIWJ4FSx5ubsUViHyxXsJ+KmvIDc7WryDqZhFBbmu/t+N/cfksbCJ0di1vp/5aph4cJCY+h72nwsG1B1gt7BbtlqB+m49v5WILe7UlRKU59HgH9Oc0l3Ou0+WxUhYRiYHi0lasg9ApME225kYfVNn1/urJkcZTxWJ7BqqXLOWhuvKBqy8XYgJo/X5ZPhfAak20HyN2xA/JgH/tRdihn4fw8A94cncccH/xxbfGrFtJqVwAUNq42g6Z2B1JGKO53r7y7PHrC8LhNGgDDsRVRzUAYY=
+  file_glob: true
+  file:
+    - $PROJECT_NAME-*
+  skip_cleanup: true
+  on:
+    condition: $DEPLOY = 1
+    repo: $REPOSITORY_PATH
+    tags: true
 
-env:
-#  - TARGET=wasm32-unknown-unknown
-  - TARGET=asmjs-unknown-emscripten
-#  - TARGET=wasm32-unknown-emscripten
+before_deploy:
+  - ./ci/before_deploy.sh
 
 script:
-  - nvm install 9
-  - git clone https://github.com/koute/stdweb.git
-  - cd stdweb
-  - export RUST_BACKTRACE=1
-  - export CARGO_WEB_LOG=cargo_web=debug
-  - rustup target add asmjs-unknown-emscripten
-  - cargo install cargo-web
-  - cargo web test --target-asmjs-emscripten
+  - ./ci/ci.sh
