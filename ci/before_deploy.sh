@@ -8,9 +8,15 @@ fi
 
 echo "Building artifacts for deployment..."
 
+rm -Rf travis-deployment
+mkdir -p travis-deployment
+
 for TARGET in $DEPLOY_TARGETS; do
     echo "Target: $TARGET"
     rustup target add $TARGET
-    cargo build --release --target=$TARGET
-    cat target/$TARGET/release/$PROJECT_NAME | gzip > $PROJECT_NAME-$TARGET.gz
+    cargo install --root target/travis-deployment/$TARGET
+
+    for FILE in target/travis-deployment/$TARGET/bin/*; do
+        cat $FILE | gzip > travis-deployment/$(basename $FILE)-$TARGET.gz
+    fi
 done
