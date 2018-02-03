@@ -6,27 +6,31 @@ cache:
 dist: trusty
 sudo: false
 
-matrix:
-  include:
-    - os: linux
-      rust: stable
-      env:
-        - DEPLOY="0"
-    - os: linux
-      rust: nightly
-      env:
-        - DEPLOY="1"
-        - DEPLOY_TARGETS="i686-unknown-linux-musl x86_64-unknown-linux-musl"
-    # - os: osx
-    #   rust: nightly
-    #   env: DEPLOY_TARGETS="x86_64-apple-darwin"
-
 jobs:
   include:
     - stage: test
+      matrix:
+        include:
+          - os: linux
+            rust: stable
+          - os: linux
+            rust: nightly
       script:
         - ./ci/ci.sh
     - stage: deploy
+      matrix:
+        include:
+          - os: linux
+            rust: nightly
+            env: DEPLOY_TARGETS="i686-unknown-linux-musl"
+          - os: linux
+            rust: nightly
+            env: DEPLOY_TARGETS="x86_64-unknown-linux-musl"
+          # - os: osx
+          #   rust: nightly
+          #   env: DEPLOY_TARGETS="x86_64-apple-darwin"
+      before_deploy:
+        - ./ci/before_deploy.sh
       deploy:
         provider: releases
         # To generate the API key:
@@ -42,10 +46,6 @@ jobs:
           - travis-deployment/*
         skip_cleanup: true
         on:
-          condition: $DEPLOY = 1
           repo: koute/travis-experiments
           branch: master
           tags: true
-
-before_deploy:
-  - ./ci/before_deploy.sh
