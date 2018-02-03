@@ -16,6 +16,11 @@ jobs:
       os: linux
       rust: nightly
       script: ./ci/ci.sh
+    - stage: test
+      os: linux
+      rust: beta
+      script: ./ci/ci.sh
+
     - stage: deploy
       if: tag IS present
       os: linux
@@ -42,11 +47,15 @@ jobs:
     - stage: deploy
       if: tag IS present
       os: linux
+      rust: stable
       env: DEPLOY_TARGETS="i686-unknown-linux-musl"
-      # - stage: deploy
-      #   os: osx
-      #   rust: nightly
-      #   env: DEPLOY_TARGETS="x86_64-apple-darwin"
+      deploy: *deployment
+    - stage: deploy
+      if: tag IS present
+      os: osx
+      rust: stable
+      env: DEPLOY_TARGETS="x86_64-apple-darwin"
+      deploy: *deployment
 
 before_deploy:
   - ./ci/before_deploy.sh
