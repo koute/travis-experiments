@@ -1,7 +1,6 @@
 env:
   global:
     - PROJECT_NAME=foobar
-    - REPOSITORY_PATH=koute/travis-experiments
 
 language: rust
 
@@ -34,7 +33,7 @@ deploy:
   skip_cleanup: true
   on:
     condition: $DEPLOY = 1
-    repo: $REPOSITORY_PATH
+    repo: koute/travis-experiments
     tags: true
 
 before_deploy:
