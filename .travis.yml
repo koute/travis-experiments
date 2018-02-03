@@ -9,14 +9,13 @@ sudo: false
 jobs:
   include:
     - stage: test
-      matrix:
-        include:
-          - os: linux
-            rust: stable
-          - os: linux
-            rust: nightly
-      script:
-        - ./ci/ci.sh
+      os: linux
+      rust: stable
+      script: ./ci/ci.sh
+    - stage: test
+      os: linux
+      rust: nightly
+      script: ./ci/ci.sh
     - stage: deploy
       matrix:
         include:
