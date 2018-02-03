@@ -16,11 +16,9 @@ matrix:
       rust: stable
     - os: linux
       rust: nightly
-      env: DEPLOY=1
       env: DEPLOY_TARGETS="i686-unknown-linux-musl x86_64-unknown-linux-musl"
     # - os: osx
     #   rust: nightly
-    #   env: DEPLOY=1
     #   env: DEPLOY_TARGETS="x86_64-apple-darwin"
 
 deploy:
@@ -32,7 +30,6 @@ deploy:
     - $PROJECT_NAME-*
   skip_cleanup: true
   on:
-    condition: $DEPLOY = 1
     repo: koute/travis-experiments
     tags: true
 
