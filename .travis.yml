@@ -19,7 +19,7 @@ jobs:
     - stage: deploy
       if: tag IS present
       os: linux
-      rust: nightly
+      rust: stable
       env: DEPLOY_TARGETS="x86_64-unknown-linux-musl"
       deploy: &deployment
         provider: releases
@@ -42,10 +42,7 @@ jobs:
     - stage: deploy
       if: tag IS present
       os: linux
-      rust: nightly
       env: DEPLOY_TARGETS="i686-unknown-linux-musl"
-      deploy:
-        <<: *deployment
       # - stage: deploy
       #   os: osx
       #   rust: nightly
