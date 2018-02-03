@@ -1,26 +1,21 @@
 language: rust
 
-cache:
-  cargo: true
-
 dist: trusty
 sudo: false
-
-deploy_condition: &deploy_condition
-  if: (tag IS present)
 
 custom:
   test: &test
     stage: test
+    cache:
+      cargo: true
     addons:
       chrome: stable
-    script: ./ci/ci.sh
+    script: ./ci/run_tests.sh
   deploy: &deploy
     stage: deploy
+    if: (tag IS present)
     rust: stable
-    before_deploy:
-      - ./ci/before_deploy.sh
-    script: skip
+    script: ./ci/build_for_deployment.sh
     deploy:
       provider: releases
       # To generate the API key:
@@ -52,15 +47,12 @@ jobs:
       os: linux
       rust: beta
 
-    - <<: *deploy_condition
-      <<: *deploy
+    - <<: *deploy
       os: linux
       env: DEPLOY_TARGETS="x86_64-unknown-linux-musl"
-    - <<: *deploy_condition
-      <<: *deploy
+    - <<: *deploy
       os: linux
       env: DEPLOY_TARGETS="i686-unknown-linux-musl"
-    - <<: *deploy_condition
-      <<: *deploy
+    - <<: *deploy
       os: osx
       env: DEPLOY_TARGETS="x86_64-apple-darwin"
