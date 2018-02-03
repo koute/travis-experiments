@@ -6,7 +6,7 @@ cache:
 dist: trusty
 sudo: false
 
-custom_env: {}
+custom_env: &custom_env {}
 
 custom:
   test: &test
