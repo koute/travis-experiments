@@ -18,11 +18,11 @@ matrix:
     - os: linux
       rust: nightly
       env: DEPLOY=1
-      env: DEPLOY_TARGET=(i686-unknown-linux-musl x86_64-unknown-linux-musl)
+      env: DEPLOY_TARGETS="i686-unknown-linux-musl x86_64-unknown-linux-musl"
     # - os: osx
     #   rust: nightly
     #   env: DEPLOY=1
-    #   env: DEPLOY_TARGET=(x86_64-apple-darwin)
+    #   env: DEPLOY_TARGETS="x86_64-apple-darwin"
 
 deploy:
   provider: releases
