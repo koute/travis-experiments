@@ -21,22 +21,31 @@ matrix:
     #   rust: nightly
     #   env: DEPLOY_TARGETS="x86_64-apple-darwin"
 
-deploy:
-  provider: releases
-  api_key:
-    secure: BlW9DNC9u1hwC4z+vGWYqIwerb9bgfAJcaoQ30xLiv3SPy3OQzaryp7moBkbHcuhFTHRXQPqj3rvBD/QgXgXJ2kx08TZSq3wMY1sPg3MKzmsNAxFqKRsJy2cK0eZq6N/l1L9GP/h0Gs6JekzLf6Z1wYKHOCM/SnTm45Kvyz5sSn7m7WXmG7wwxMk0yaMfLfrGyPO+GoQPDUc58Ulh4GanPpnJFpXqCEePheo5+NBZwSK+C4GaGccGR8lNnw1K7dNfdyrK4nm2wYTFVvkJwSxd4R6KchDFEN4LTP6Zzrfg5CE25n0KYTQ8mf3yhyXERq8/WQQLszKt1cwsJhU5kI7HulJ0I8MbD7MACBfyzVfpEyRoViTRiiARYpQjd/PCe4Ha/z/OpgIdPQMQMa0TaMXIWJ4FSx5ubsUViHyxXsJ+KmvIDc7WryDqZhFBbmu/t+N/cfksbCJ0di1vp/5aph4cJCY+h72nwsG1B1gt7BbtlqB+m49v5WILe7UlRKU59HgH9Oc0l3Ou0+WxUhYRiYHi0lasg9ApME225kYfVNn1/urJkcZTxWJ7BqqXLOWhuvKBqy8XYgJo/X5ZPhfAak20HyN2xA/JgH/tRdihn4fw8A94cncccH/xxbfGrFtJqVwAUNq42g6Z2B1JGKO53r7y7PHrC8LhNGgDDsRVRzUAYY=
-  file_glob: true
-  file:
-    - travis-deployment/*
-  skip_cleanup: true
-  on:
-    condition: $DEPLOY = 1
-    repo: koute/travis-experiments
-    branch: master
-    tags: true
+jobs:
+  include:
+    - stage: test
+      script:
+        - ./ci/ci.sh
+    - stage: deploy
+      deploy:
+        provider: releases
+        # To generate the API key:
+        #   1. On Github: Settings -> Developer settings -> Personal access tokens -> Generate new token
+        #   2. Select only `public_repo`
+        #   3. gem install travis
+        #   4. travis login
+        #   5. travis encrypt <TOKEN>
+        api_key:
+          secure: BlW9DNC9u1hwC4z+vGWYqIwerb9bgfAJcaoQ30xLiv3SPy3OQzaryp7moBkbHcuhFTHRXQPqj3rvBD/QgXgXJ2kx08TZSq3wMY1sPg3MKzmsNAxFqKRsJy2cK0eZq6N/l1L9GP/h0Gs6JekzLf6Z1wYKHOCM/SnTm45Kvyz5sSn7m7WXmG7wwxMk0yaMfLfrGyPO+GoQPDUc58Ulh4GanPpnJFpXqCEePheo5+NBZwSK+C4GaGccGR8lNnw1K7dNfdyrK4nm2wYTFVvkJwSxd4R6KchDFEN4LTP6Zzrfg5CE25n0KYTQ8mf3yhyXERq8/WQQLszKt1cwsJhU5kI7HulJ0I8MbD7MACBfyzVfpEyRoViTRiiARYpQjd/PCe4Ha/z/OpgIdPQMQMa0TaMXIWJ4FSx5ubsUViHyxXsJ+KmvIDc7WryDqZhFBbmu/t+N/cfksbCJ0di1vp/5aph4cJCY+h72nwsG1B1gt7BbtlqB+m49v5WILe7UlRKU59HgH9Oc0l3Ou0+WxUhYRiYHi0lasg9ApME225kYfVNn1/urJkcZTxWJ7BqqXLOWhuvKBqy8XYgJo/X5ZPhfAak20HyN2xA/JgH/tRdihn4fw8A94cncccH/xxbfGrFtJqVwAUNq42g6Z2B1JGKO53r7y7PHrC8LhNGgDDsRVRzUAYY=
+        file_glob: true
+        file:
+          - travis-deployment/*
+        skip_cleanup: true
+        on:
+          condition: $DEPLOY = 1
+          repo: koute/travis-experiments
+          branch: master
+          tags: true
 
 before_deploy:
   - ./ci/before_deploy.sh
-
-script:
-  - ./ci/ci.sh
