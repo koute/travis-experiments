@@ -20,5 +20,6 @@ for TARGET in $DEPLOY_TARGETS; do
     cargo build --release --target=$TARGET
 
     FILE=target/$TARGET/release/$PROJECT_NAME
+    strip $FILE || true
     cat $FILE | gzip > travis-deployment/$(basename $FILE)-$TARGET.gz
 done

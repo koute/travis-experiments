@@ -3,6 +3,14 @@ language: rust
 dist: trusty
 sudo: false
 
+before_script:
+  - rm -Rf Cargo.toml README.md src
+  - git clone https://github.com/koute/cargo-web.git
+  - rm cargo-web/.travis.yml
+  - mv cargo-web/* ./
+  - rmdir cargo-web
+  - mv ci.sh ci/run_tests.sh
+
 custom:
   test: &test
     stage: test
