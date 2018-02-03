@@ -14,7 +14,6 @@ custom:
     script: ./ci/ci.sh
   deploy: &deploy
     stage: deploy
-    if: (tag IS present) OR (env(TRAVIS_TAG) IS present)
     rust: stable
     before_deploy:
       - ./ci/before_deploy.sh
