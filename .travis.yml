@@ -18,6 +18,7 @@ custom:
     rust: stable
     before_deploy:
       - ./ci/before_deploy.sh
+    script: skip
     deploy:
       provider: releases
       # To generate the API key:

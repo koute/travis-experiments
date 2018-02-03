@@ -15,7 +15,7 @@ mkdir -p travis-deployment
 
 for TARGET in $DEPLOY_TARGETS; do
     echo "Target: $TARGET"
-    rustup target add $TARGET
+    rustup target add $TARGET || true
     cargo build --release --target=$TARGET
 
     FILE=target/$TARGET/release/$PROJECT_NAME
