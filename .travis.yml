@@ -17,20 +17,11 @@ jobs:
       rust: nightly
       script: ./ci/ci.sh
     - stage: deploy
-      matrix:
-        include:
-          - os: linux
-            rust: nightly
-            env: DEPLOY_TARGETS="i686-unknown-linux-musl"
-          - os: linux
-            rust: nightly
-            env: DEPLOY_TARGETS="x86_64-unknown-linux-musl"
-          # - os: osx
-          #   rust: nightly
-          #   env: DEPLOY_TARGETS="x86_64-apple-darwin"
-      before_deploy:
-        - ./ci/before_deploy.sh
-      deploy:
+      if: tag IS present
+      os: linux
+      rust: nightly
+      env: DEPLOY_TARGETS="x86_64-unknown-linux-musl"
+      deploy: &deployment
         provider: releases
         # To generate the API key:
         #   1. On Github: Settings -> Developer settings -> Personal access tokens -> Generate new token
@@ -48,3 +39,17 @@ jobs:
           repo: koute/travis-experiments
           branch: master
           tags: true
+      - stage: deploy
+        if: tag IS present
+        os: linux
+        rust: nightly
+        env: DEPLOY_TARGETS="i686-unknown-linux-musl"
+        deploy:
+          <<: *deployment
+      # - stage: deploy
+      #   os: osx
+      #   rust: nightly
+      #   env: DEPLOY_TARGETS="x86_64-apple-darwin"
+
+before_deploy:
+  - ./ci/before_deploy.sh
