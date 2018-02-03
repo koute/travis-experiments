@@ -6,7 +6,8 @@ cache:
 dist: trusty
 sudo: false
 
-custom_env: &custom_env {}
+deploy_condition: &deploy_condition
+  if: (tag IS present)
 
 custom:
   test: &test
@@ -16,7 +17,6 @@ custom:
     script: ./ci/ci.sh
   deploy: &deploy
     stage: deploy
-    if: (tag IS present) OR (env(TRAVIS_TAG) IS present)
     rust: stable
     before_deploy:
       - ./ci/before_deploy.sh
@@ -52,15 +52,15 @@ jobs:
       os: linux
       rust: beta
 
-    - <<: *deploy
-      <<: *custom_env
+    - <<: *deploy_condition
+      <<: *deploy
       os: linux
       env: DEPLOY_TARGETS="x86_64-unknown-linux-musl"
-    - <<: *deploy
-      <<: *custom_env
+    - <<: *deploy_condition
+      <<: *deploy
       os: linux
       env: DEPLOY_TARGETS="i686-unknown-linux-musl"
-    - <<: *deploy
-      <<: *custom_env
+    - <<: *deploy_condition
+      <<: *deploy
       os: osx
       env: DEPLOY_TARGETS="x86_64-apple-darwin"
