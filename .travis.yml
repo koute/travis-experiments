@@ -14,11 +14,13 @@ matrix:
   include:
     - os: linux
       rust: stable
-      env: DEPLOY="0"
+      env:
+        - DEPLOY="0"
     - os: linux
       rust: nightly
-      env: DEPLOY="1"
-      env: DEPLOY_TARGETS="i686-unknown-linux-musl x86_64-unknown-linux-musl"
+      env:
+        - DEPLOY="1"
+        - DEPLOY_TARGETS="i686-unknown-linux-musl x86_64-unknown-linux-musl"
     # - os: osx
     #   rust: nightly
     #   env: DEPLOY_TARGETS="x86_64-apple-darwin"
