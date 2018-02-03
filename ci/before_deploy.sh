@@ -2,6 +2,8 @@
 
 set -euo pipefail
 
+PROJECT_NAME=$(cat Cargo.toml | sed -En 's/.+?name *= *"([^"]+)".*/\1/p' | head -n 1)
+
 if [ -z "${DEPLOY_TARGETS-}" ]; then
     exit 1
 fi
@@ -14,9 +16,8 @@ mkdir -p travis-deployment
 for TARGET in $DEPLOY_TARGETS; do
     echo "Target: $TARGET"
     rustup target add $TARGET
-    cargo install --root target/travis-deployment/$TARGET
+    cargo build --release --target=$TARGET
 
-    for FILE in target/travis-deployment/$TARGET/bin/*; do
-        cat $FILE | gzip > travis-deployment/$(basename $FILE)-$TARGET.gz
-    done
+    FILE=target/$TARGET/release/$PROJECT_NAME
+    cat $FILE | gzip > travis-deployment/$(basename $FILE)-$TARGET.gz
 done
