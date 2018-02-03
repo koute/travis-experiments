@@ -39,13 +39,13 @@ jobs:
           repo: koute/travis-experiments
           branch: master
           tags: true
-      # - stage: deploy
-      #   if: tag IS present
-      #   os: linux
-      #   rust: nightly
-      #   env: DEPLOY_TARGETS="i686-unknown-linux-musl"
-      #   deploy:
-      #     <<: *deployment
+    - stage: deploy
+      if: tag IS present
+      os: linux
+      rust: nightly
+      env: DEPLOY_TARGETS="i686-unknown-linux-musl"
+      deploy:
+        <<: *deployment
       # - stage: deploy
       #   os: osx
       #   rust: nightly
