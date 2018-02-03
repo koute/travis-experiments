@@ -14,8 +14,10 @@ matrix:
   include:
     - os: linux
       rust: stable
+      env: DEPLOY="0"
     - os: linux
       rust: nightly
+      env: DEPLOY="1"
       env: DEPLOY_TARGETS="i686-unknown-linux-musl x86_64-unknown-linux-musl"
     # - os: osx
     #   rust: nightly
@@ -30,7 +32,7 @@ deploy:
     - $PROJECT_NAME-*
   skip_cleanup: true
   on:
-    condition: -z "$DEPLOY_TARGETS"
+    condition: $DEPLOY = 1
     repo: koute/travis-experiments
     tags: true
 
