@@ -36,6 +36,7 @@ deploy:
   on:
     condition: $DEPLOY = 1
     repo: koute/travis-experiments
+    branch: master
     tags: true
 
 before_deploy:
