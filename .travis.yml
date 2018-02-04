@@ -9,7 +9,6 @@ before_script:
   - rm -Rf cargo-web/.travis.yml cargo-web/.git
   - mv cargo-web/{.??,}* ./
   - rmdir cargo-web
-  - mv ci.sh ci/run_tests.sh
 
 custom:
   test: &test
