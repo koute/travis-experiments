@@ -45,22 +45,22 @@ custom:
 
 jobs:
   include:
-    - <<: *test
-      os: linux
-      rust: stable
-    - <<: *test
-      os: linux
-      rust: nightly
-    - <<: *test
-      os: linux
-      rust: beta
+#    - <<: *test
+#      os: linux
+#      rust: stable
+#    - <<: *test
+#      os: linux
+#      rust: nightly
+#    - <<: *test
+#      os: linux
+#      rust: beta
 
     - <<: *deploy
       os: linux
       env: DEPLOY_TARGETS="x86_64-unknown-linux-gnu"
-    - <<: *deploy
-      os: linux
-      env: DEPLOY_TARGETS="i686-unknown-linux-gnu"
+#    - <<: *deploy
+#      os: linux
+#      env: DEPLOY_TARGETS="i686-unknown-linux-gnu"
     - <<: *deploy
       os: osx
       env: DEPLOY_TARGETS="x86_64-apple-darwin"
