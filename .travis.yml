@@ -4,7 +4,7 @@ dist: trusty
 sudo: false
 
 before_script:
-  - rm -Rf Cargo.toml README.md src
+  - rm -Rf Cargo.toml README.md src ci
   - git clone https://github.com/koute/cargo-web.git
   - rm -Rf cargo-web/.travis.yml cargo-web/.git
   - mv cargo-web/{.??,}* ./
